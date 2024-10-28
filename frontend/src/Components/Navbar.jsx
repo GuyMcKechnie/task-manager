@@ -9,7 +9,7 @@ function Navbar() {
     ];
 
     return (
-        <nav className="bg-gray-800 p-4">
+        <nav className="bg-gray-800 p-4 mb-16">
             <ul className="flex justify-end">
                 {navbarItems.map((navbarItem) => (
                     <li

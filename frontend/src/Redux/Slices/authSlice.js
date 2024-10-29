@@ -10,7 +10,6 @@ const authSlice = createSlice({
         },
         logout: (state) => {
             state.user = null; // user is removed from the state
-
             state.token = null; // token is removed from the state
         },
     },

@@ -9,14 +9,14 @@ function Navbar() {
     ];
 
     return (
-        <nav className="bg-gray-800 p-4 mb-16">
+        <nav className="bg-gray-800 p-4">
             <ul className="flex justify-end">
                 {navbarItems.map((navbarItem) => (
                     <li
                         key={navbarItem.name}
-                        className="text-white ml-16 hover:text-sky-400"
+                        className="font-inter text-white ml-16 hover:scale-101 hover:text-sky-400 transition duration-200 ease-out cursor-pointer"
                     >
-                        <div bg-gray-800>
+                        <div className="bg-gray-800">
                             <Link to={navbarItem.path}>{navbarItem.name}</Link>
                         </div>
                     </li>

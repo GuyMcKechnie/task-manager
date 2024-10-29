@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
 import TaskForm from "../Components/TaskForm";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, removeTask } from "../Redux/Slices/taskSlice";
-import { FaTrash } from "react-icons/fa";
+import { addTask, removeTask, updateTask } from "../Redux/Slices/taskSlice";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 
 function Dashboard() {
@@ -16,9 +16,20 @@ function Dashboard() {
               tasks
             : // if filter = anything else, make it the priority selected
               tasks.filter((task) => task.priority === filter);
-    const handleAddTask = (task) => {
-        dispatch(addTask({ ...task, id: Date.now() })); //  Add a unique id to each task
+    const [editTask, setEditTask] = useState(false);
+    const handleEditTask = (task) => {
+        setEditTask(task);
     };
+    const handleAddTask = (task) => {
+        if (editTask) {
+            dispatch(updateTask({ ...task, id: editTask.id }));
+            // reset edit task state after editing
+            setEditTask(null);
+        } else {
+            dispatch(addTask({ ...task, id: Date.now() })); //  Add a unique id to each task
+        }
+    };
+
     const handleRemoveTask = (id) => {
         dispatch(removeTask(id));
     };
@@ -30,7 +41,7 @@ function Dashboard() {
                 <h2 className="text-2xl font-bold text-white mb-4">My Tasks</h2>
                 <div className="flex flex-col lg:flex-row lg:gap-8 bg-gray-800 rounded-md shadow-md">
                     {/*Task Form*/}
-                    <TaskForm onSubmit={handleAddTask} />
+                    <TaskForm onSubmit={handleAddTask} editTask={editTask} />
                     {/*Task List*/}
                     <div id="task-list" className="w-full m-4 space-y-6">
                         {/* Search Bar */}
@@ -69,24 +80,27 @@ function Dashboard() {
                                             </h3>
                                         )}
                                         {/* Icon */}
-                                        <div className="hover:scale-110 transition duration-200 ease-in-out cursor-pointer">
+                                        <div className="flex gap-4">
                                             <IconContext.Provider
                                                 value={{
                                                     color: "rgb(52, 152, 219)",
                                                     size: 20,
                                                     className:
-                                                        "global-class-name",
+                                                        "global-class-name hover:scale-110 transition duration-200 ease-in-out cursor-pointer",
                                                 }}
                                             >
-                                                <div>
-                                                    <FaTrash
-                                                        onClick={() =>
-                                                            handleRemoveTask(
-                                                                task.id
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
+                                                <FaPencilAlt
+                                                    onClick={() =>
+                                                        handleEditTask(task)
+                                                    }
+                                                />
+                                                <FaTrash
+                                                    onClick={() =>
+                                                        handleRemoveTask(
+                                                            task.id
+                                                        )
+                                                    }
+                                                />
                                             </IconContext.Provider>
                                         </div>
                                     </div>

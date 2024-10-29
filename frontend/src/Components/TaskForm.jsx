@@ -1,24 +1,32 @@
-import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 
-function TaskForm({ onSubmit }) {
+function TaskForm({ onSubmit, editTask }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [priority, setPriority] = useState("Normal");
     const [dueDate, setDueDate] = useState(
         new Date().toISOString().split("T")[0]
     );
+    useEffect(() => {
+        if (editTask) {
+            setTitle(editTask.title);
+            setDescription(editTask.description);
+            setPriority(editTask.priority);
+            setDueDate(editTask.dueDate);
+        } else {
+            setTitle("Task");
+            setDescription(
+                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, obcaecati quis iure laboriosam quasi tempore quod dolorum harum dignissimos consequatur?"
+            );
+            // setTitle("");
+            // setDescription("");
+            setPriority("Normal");
+            setDueDate(new Date().toISOString().split("T")[0]);
+        }
+    }, [editTask]);
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ title, description, priority, dueDate });
-        setTitle("Task");
-        setDescription(
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, obcaecati quis iure laboriosam quasi tempore quod dolorum harum dignissimos consequatur?"
-        );
-        // setTitle("");
-        // setDescription("");
-        setPriority("Normal");
-        setDueDate(new Date().toISOString().split("T")[0]);
     };
 
     return (
@@ -57,7 +65,7 @@ function TaskForm({ onSubmit }) {
                         type="submit"
                         className="bg-sky-800 text-white p-2 rounded-md hover:bg-sky-900"
                     >
-                        Add Task
+                        {editTask ? "Update Task" : "Create New Task"}
                     </button>
                 </form>
             </div>

@@ -1,10 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Redux/Slices/authSlice";
 
 function Navbar() {
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
+    const handleLogout = () => {
+        dispatch(logout());
+    };
     const navbarItems = [
         { name: "Home", path: "/" },
-        { name: "Login", path: "/login" },
         { name: "Dashboard", path: "/dashboard" },
     ];
 
@@ -21,6 +27,32 @@ function Navbar() {
                         </div>
                     </li>
                 ))}
+                {user ? (
+                    <>
+                        <li className="text-white ml-16">{user.email}</li>
+                        <li>
+                            <button
+                                onClick={handleLogout}
+                                className="text-white ml-16"
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    </>
+                ) : (
+                    <>
+                        <li>
+                            <Link to="/login" className="text-white ml-16">
+                                Login
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/register" className="text-white ml-16">
+                                Register
+                            </Link>
+                        </li>
+                    </>
+                )}
             </ul>
         </nav>
     );

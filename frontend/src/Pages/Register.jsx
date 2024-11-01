@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../Redux/Slices/authSlice";
+import { registerUser } from "../Redux/Slices/authSlice";
 import Navbar from "../Components/Navbar";
 
-function Login() {
+function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
 
-    const handleLogin = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        dispatch(loginUser({ email, password }));
+        dispatch(registerUser({ email, password }));
     };
 
     return (
@@ -18,8 +18,8 @@ function Login() {
             {/*Navbar Items*/}
             <Navbar />
             <div className="max-w-md mx-auto p-4">
-                <h2 className="text-2xl mb-4">Login</h2>
-                <form onSubmit={handleLogin} className="space-y-4">
+                <h2 className="text-2xl mb-4">Register</h2>
+                <form onSubmit={handleRegister} className="space-y-4">
                     <input
                         type="email"
                         placeholder="Email"
@@ -38,7 +38,7 @@ function Login() {
                         type="submit"
                         className="bg-blue-500 text-white p-2 w-full"
                     >
-                        Login
+                        Register
                     </button>
                 </form>
             </div>
@@ -46,4 +46,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;

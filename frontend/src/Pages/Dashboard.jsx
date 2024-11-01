@@ -37,8 +37,10 @@ function Dashboard() {
         <div className="bg-gray-100 min-h-screen">
             {/*Navbar Items*/}
             <Navbar />
-            <div className="mr-4 ml-4">
-                <h2 className="text-2xl font-bold text-white mb-4">My Tasks</h2>
+            <div className="mr-4 ml-4 py-20">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                    My Tasks
+                </h2>
                 <div className="flex flex-col lg:flex-row lg:gap-8 bg-gray-800 rounded-md shadow-md">
                     {/*Task Form*/}
                     <TaskForm onSubmit={handleAddTask} editTask={editTask} />

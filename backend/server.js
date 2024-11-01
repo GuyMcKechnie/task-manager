@@ -22,7 +22,7 @@ mongoose
     .then(() => console.log("Database connected."))
     .catch((error) => console.log(error));
 
-app.listen(PORT, () => console.log("Server running on port ${PORT}"));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 const authRoutes = require("./Routes/Auth");
 // Using the auth routes for any incoming requests to the '/api/auth' endpoint

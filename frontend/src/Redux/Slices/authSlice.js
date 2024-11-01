@@ -3,27 +3,46 @@ import axios from "axios";
 
 const authSlice = createSlice({
     name: "auth",
-    initialState: { user: null, token: null, error: null },
+    initialState: { user: null, token: null, error: null, success: null },
     reducers: {
         logout: (state) => {
-            state.user = null; // user is removed from the state
-            state.token = null; // token is removed from the state
+            state.user = null;
+            state.token = null;
+            state.error = null;
+            state.success = null;
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
-                state.token = action.payload.token;
-                state.error = null;
+                if (action.payload.success) {
+                    state.user = action.payload.user;
+                    state.token = action.payload.token;
+                    state.error = null;
+                    state.success = "Logged in sucessfully!";
+                } else {
+                    state.error = action.payload.error;
+                    state.success = null;
+                }
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.error = action.payload.error;
+                state.error = "Login failed. Please try again.";
+                state.success = null;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
-                state.token = action.payload.token;
-                state.error = null;
+                if (action.payload.success) {
+                    state.user = action.payload.user;
+                    state.token = action.payload.token;
+                    state.error = null;
+                    state.success = "Registered sucessfully!";
+                } else {
+                    state.error = action.payload.error;
+                    state.success = null;
+                }
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.error = "Register failed. Please try again.";
+                state.success = null;
             });
     },
 });

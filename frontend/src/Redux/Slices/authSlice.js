@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const authSlice = createSlice({
     name: "auth",
@@ -23,31 +24,34 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.token = action.payload.token;
                 state.error = null;
-            })
-            .addCase(registerUser.rejected, (state, action) => {
-                state.error = action.payload.error;
             });
     },
 });
 
-const loginUser = createAsyncThunk(
-    "auth/loginUser",
-    async (userData, thunkAPI) => {
-        // Destructure the email and password from the userData object
-        const { email, password } = userData;
-        if (email === "test@example.com" && password === "password") {
-            return { user: { email }, token: "fakeToken123" };
-        } else {
-            return thunkAPI.rejectWithValue("Invalid login credentials!");
-        }
+const loginUser = createAsyncThunk("/loginUser", async (userData, thunkAPI) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:5000/api/auth/login",
+            userData
+        );
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
-);
+});
 
 const registerUser = createAsyncThunk(
     "auth/registerUser",
     async (userData, thunkAPI) => {
-        const { email } = userData;
-        return { user: { email }, token: "fakeToken123" };
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/api/auth/register",
+                userData
+            );
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
     }
 );
 
